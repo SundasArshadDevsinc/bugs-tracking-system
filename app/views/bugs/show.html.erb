@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <h1 class="mt-4"><%= @bug.title %></h1>
+
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">Description</h5>
+          <p class="card-text"><%= @bug.description %></p>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">Details</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Deadline:</strong> <%= @bug.deadline %></li>
+            <li class="list-group-item"><strong>Bug Type:</strong> <%= @bug.bug_type %></li>
+            <li class="list-group-item"><strong>Bug Status:</strong> <%= @bug.bug_status %></li>
+          </ul>
+        </div>
+      </div>
+
+      <% if @bug.image.attached? %>
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Screenshot</h5>
+            <p class="card-text"><%= image_tag url_for(@bug.image), class: 'img-fluid' %></p>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="mt-4">
+        <%= link_to 'Edit', edit_user_project_bug_path(@user, @project, @bug), class: 'btn btn-primary' %>
+        <%= link_to 'Back', user_project_path(@user, @project), class: 'btn btn-secondary' %>
+      </div>
+    </div>
+  </div>
+</div>
