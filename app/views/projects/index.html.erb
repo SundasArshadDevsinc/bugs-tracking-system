@@ -1,7 +1,9 @@
 <div class="container">
   <h1 class="mt-4">Projects</h1>
 
-  <%= link_to 'New Project', new_user_project_path(@user), class: 'btn btn-success my-3' %>
+  <% if current_user.role == 'manager' %>
+    <%= link_to 'New Project', new_user_project_path(@user), class: 'btn btn-success my-3' %>
+  <% end %>
 
   <table class="table table-bordered">
     <thead class="thead-dark">
@@ -20,8 +22,11 @@
           <td><%= project.description %></td>
           <td><%= project.technologies %></td>
           <td><%= link_to 'Show', user_project_path(@user, project), class: 'btn btn-primary btn-sm' %></td>
-          <td><%= link_to 'Edit', edit_user_project_path(@user, project), class: 'btn btn-warning btn-sm' %></td>
-          <td><%= link_to 'Destroy', user_project_path(@user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+          
+          <% if current_user.role == 'manager' %>
+            <td><%= link_to 'Edit', edit_user_project_path(@user, project), class: 'btn btn-warning btn-sm' %></td>
+            <td><%= link_to 'Destroy', user_project_path(@user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

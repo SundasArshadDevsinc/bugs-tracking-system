@@ -3,7 +3,17 @@ class ProjectsController < ApplicationController
         before_action :find_project, only: [:show, :edit, :update, :destroy]
       
         def index
-          @projects = @user.projects
+          if current_user.role == 'developer'
+            # Fetch bugs for which the current user is assigned as a developer
+            developer_bugs = Bug.where(developer_id: current_user.id)
+      
+            # Extract the associated projects from the developer's bugs
+            @projects = developer_bugs.map { |bug| bug.project }.uniq
+          elsif current_user.role == 'qa'
+            @projects = Project.all
+          else
+            @projects = current_user.projects
+          end
         end
       
         def show
@@ -32,16 +42,18 @@ class ProjectsController < ApplicationController
       
         def update
           if @project.update(project_params)
-            redirect_to user_project_path(@user, @project) # Adjust the route name as needed
+            redirect_to user_project_path(@project.user, @project) # Use @project.user to get the associated user
           else
             render 'edit'
           end
+        
         end
-      
-        def destroy
-          @project.destroy
-          redirect_to user_projects_path(@user) # Adjust the route name as needed
-        end
+    
+          def destroy
+            @project.destroy
+            redirect_to user_projects_path(@project.user) # Use @project.user to get the associated user
+          end
+        
       
         private
       
@@ -50,7 +62,7 @@ class ProjectsController < ApplicationController
         end
       
         def find_user
-          @user = User.find(params[:user_id])
+          @user = current_user
         end
       
         def find_project

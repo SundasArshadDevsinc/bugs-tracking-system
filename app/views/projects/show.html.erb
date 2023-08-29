@@ -19,7 +19,9 @@
 
       <h2 class="mt-4">Bugs</h2>
 
-      <%= link_to 'New Bug', new_user_project_bug_path(@user, @project), class: 'btn btn-success mb-3' %>
+      <% if current_user.role != 'developer' %>
+        <%= link_to 'New Bug', new_user_project_bug_path(@user, @project), class: 'btn btn-success mb-3' %>
+      <% end %>
 
       <% if @project.bugs.any? %>
         <table class="table table-bordered">
@@ -33,20 +35,38 @@
             </tr>
           </thead>
           <tbody>
-            <% @project.bugs.each do |bug| %>
-              <tr>
-                <td><%= bug.title %></td>
-                <td><%= bug.deadline %></td>
-                <td><%= bug.bug_type %></td>
-                <td><%= bug.bug_status %></td>
-                <td>
-                  <div class="btn-group" role="group">
-                    <%= link_to 'Show', user_project_bug_path(@user, @project, bug), class: 'btn btn-primary btn-sm' %>
-                    <%= link_to 'Edit', edit_user_project_bug_path(@user, @project, bug), class: 'btn btn-warning btn-sm' %>
-                    <%= link_to 'Delete', user_project_bug_path(@user, @project, bug), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-                  </div>
-                </td>
-              </tr>
+            <% if current_user.role == 'developer' %>
+              <% @project.bugs.where(developer_id: current_user.id).each do |bug| %>
+                <tr>
+                  <td><%= bug.title %></td>
+                  <td><%= bug.deadline %></td>
+                  <td><%= bug.bug_type %></td>
+                  <td><%= bug.bug_status %></td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <%= link_to 'Show', user_project_bug_path(@user, @project, bug), class: 'btn btn-primary btn-sm' %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
+              <% @project.bugs.each do |bug| %>
+                <tr>
+                  <td><%= bug.title %></td>
+                  <td><%= bug.deadline %></td>
+                  <td><%= bug.bug_type %></td>
+                  <td><%= bug.bug_status %></td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <%= link_to 'Show', user_project_bug_path(@user, @project, bug), class: 'btn btn-primary btn-sm' %>
+                      <% if current_user.role != 'developer' %>
+                        <%= link_to 'Edit', edit_user_project_bug_path(@user, @project, bug), class: 'btn btn-warning btn-sm' %>
+                        <%= link_to 'Delete', user_project_bug_path(@user, @project, bug), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>

@@ -30,12 +30,12 @@
 
         <div class="mb-3">
           <%= form.label :bug_type, "Bug Type", class: 'form-label' %>
-          <%= form.select :bug_type, Bug.bug_types.keys, {}, class: 'form-select' %>
+          <%= form.select :bug_type, Bug.bug_types.keys, {}, class: 'form-select', id: 'bug_bug_type' %>
         </div>
 
         <div class="mb-3">
           <%= form.label :bug_status, "Bug Status", class: 'form-label' %>
-          <%= form.select :bug_status, Bug.bug_statuses.keys, {}, class: 'form-select' %>
+          <%= form.select :bug_status, Bug.bug_statuses.keys, {}, class: 'form-select', id: 'bug_bug_status' %>
         </div>
 
         <div class="mb-3">

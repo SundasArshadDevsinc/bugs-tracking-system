@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  has_many :projects
-  has_many :bugs
+  validates :name, presence: true, uniqueness: true
+  has_many :projects, dependent: :destroy
+  has_many :bugs, dependent: :destroy
   enum role: { developer: 0, manager: 1, qa: 2 }
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

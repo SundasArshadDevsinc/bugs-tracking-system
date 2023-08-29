@@ -44,13 +44,13 @@ class BugsController < ApplicationController
   
     def destroy
       @bug.destroy
-      redirect_to user_project_bugs_path(@user, @project)
+      redirect_to user_project_path(@user, @project)
     end
   
     private
   
     def bug_params
-      params.require(:bug).permit(:title, :description, :deadline, :bug_type, :bug_status, :image)
+      params.require(:bug).permit(:title, :description, :deadline, :bug_type, :bug_status, :developer_id, :image)
     end
   
     def find_user
@@ -64,5 +64,18 @@ class BugsController < ApplicationController
     def find_bug
       @bug = @project.bugs.find(params[:id])
     end
+
+    def update_bug_status
+      if current_user.developer? # Ensure only developers can update bug_status
+        if @bug.update(bug_status: params[:bug][:bug_status])
+          redirect_to user_project_bug_path(@user, @project, @bug), notice: 'Bug Status was successfully updated.'
+        else
+          render 'show'
+        end
+      else
+        redirect_to user_project_bug_path(@user, @project, @bug), alert: 'You do not have permission to update Bug Status.'
+      end
+    end
+    
   end
   
