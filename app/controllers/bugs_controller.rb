@@ -23,6 +23,7 @@ class BugsController < ApplicationController
         
       @bug = @project.bugs.build(bug_params)
       @bug.user = current_user
+      authorize @bug
       if @bug.save
         redirect_to user_project_bug_path(@user, @project, @bug)
       else
@@ -35,6 +36,7 @@ class BugsController < ApplicationController
     end
   
     def update
+      authorize @bug
       if @bug.update(bug_params)
         redirect_to user_project_bug_path(@user, @project, @bug)
       else
@@ -43,6 +45,7 @@ class BugsController < ApplicationController
     end
   
     def destroy
+      authorize @bug
       @bug.destroy
       redirect_to user_project_path(@user, @project)
     end

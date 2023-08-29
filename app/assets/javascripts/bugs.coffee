@@ -11,11 +11,12 @@ $ ->
 
   # Define the options for Bug Status based on Bug Type
   bugTypeOptions =
-    'Bug': ['new_bug', 'started', 'resolved']
-    'Feature': ['new_feature', 'started', 'completed']
+    'bug': ['new_bug', 'started', 'resolved']
+    'feature': ['new_feature', 'started', 'completed']
 
   # Function to update Bug Status options
   updateBugStatusOptions = ->
+    
     selectedBugType = bugTypeDropdown.val()
     options = bugTypeOptions[selectedBugType] || []
 

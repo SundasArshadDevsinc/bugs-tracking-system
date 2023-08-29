@@ -29,6 +29,7 @@ class ProjectsController < ApplicationController
         def create
           @user = current_user
           @project = @user.projects.build(project_params)
+          authorize @project
           if @project.save
             redirect_to user_project_path(@user, @project) # Adjust the route name as needed
           else
@@ -41,6 +42,7 @@ class ProjectsController < ApplicationController
         end
       
         def update
+          authorize @project
           if @project.update(project_params)
             redirect_to user_project_path(@project.user, @project) # Use @project.user to get the associated user
           else
@@ -50,6 +52,7 @@ class ProjectsController < ApplicationController
         end
     
           def destroy
+            authorize @project
             @project.destroy
             redirect_to user_projects_path(@project.user) # Use @project.user to get the associated user
           end
