@@ -21,7 +21,7 @@
           <td><%= bug.title %></td>
           <td><%= bug.description %></td>
           <td><%= bug.deadline %></td>
-          <td><%= bug.bug_type %></td>
+          <td><%= bug.types %></td>
           <td><%= bug.bug_status %></td>
           <td><%= link_to 'Show', user_project_bug_path(@user, @project, bug), class: 'btn btn-primary btn-sm' %></td>
           <td><%= link_to 'Edit', edit_user_project_bug_path(@user, @project, bug), class: 'btn btn-warning btn-sm' %></td>

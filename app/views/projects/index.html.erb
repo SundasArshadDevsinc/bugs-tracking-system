@@ -1,5 +1,16 @@
 <div class="container">
   <h1 class="mt-4">Projects</h1>
+  <%= paginate @projects do %>
+  <ul class="pagination">
+    <li class="page-item">
+      <%= link_to 'Previous', @projects.prev_page, class: 'btn btn-primary' %>
+    </li>
+    <li class="page-item">
+      <%= link_to 'Next', @projects.next_page, class: 'btn btn-primary' %>
+    </li>
+  </ul>
+<% end %>
+
 
   <% if current_user.role == 'manager' %>
     <%= link_to 'New Project', new_user_project_path(@user), class: 'btn btn-success my-3' %>
@@ -16,19 +27,8 @@
     </thead>
 
     <tbody>
-      <% @projects.each do |project| %>
-        <tr>
-          <td><%= project.title %></td>
-          <td><%= project.description %></td>
-          <td><%= project.technologies %></td>
-          <td><%= link_to 'Show', user_project_path(@user, project), class: 'btn btn-primary btn-sm' %></td>
-          
-          <% if current_user.role == 'manager' %>
-            <td><%= link_to 'Edit', edit_user_project_path(@user, project), class: 'btn btn-warning btn-sm' %></td>
-            <td><%= link_to 'Destroy', user_project_path(@user, project), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
-          <% end %>
-        </tr>
-      <% end %>
+      <%= render  @projects %>
     </tbody>
   </table>
+  
 </div>

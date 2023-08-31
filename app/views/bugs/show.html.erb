@@ -17,8 +17,8 @@
           <h5 class="card-title">Details</h5>
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Deadline:</strong> <%= @bug.deadline %></li>
-            <li class="list-group-item"><strong>Bug Type:</strong> <%= @bug.bug_type %></li>
-            <li class="list-group-item"><strong>Bug Status:</strong> <%= @bug.bug_status %></li>
+            <li class="list-group-item"><strong>Bug Type:</strong> <%= @bug.types %></li>
+            <li class="list-group-item"><strong>Bug Status:</strong> <%= @bug.status %></li>
             <li class="list-group-item">
               <strong>Assigned to Developer:</strong>
               <%= @bug.developer.present? ? @bug.developer.name : "Not Assigned" %>
@@ -36,29 +36,28 @@
         </div>
       <% end %>
 
-      <% if current_user.developer? %>
-        <div class="card mt-4">
-          <div class="card-body">
-            <h5 class="card-title">Update Bug Status</h5>
-            <% if @bug.deadline.present? && @bug.deadline < Date.today %>
-              <div class="alert alert-danger mt-4">
-                Deadline is over!
-              </div>
-            <% else %>
-              <%= form_with(model: @bug, url: user_project_bug_path(@user, @project, @bug), method: :patch, local: true, html: { class: 'my-4' }) do |form| %>
-                <div class="mb-3">
-                  <%= form.label :bug_status, "Bug Status", class: 'form-label' %>
-                  <%= form.select :bug_status, Bug.bug_statuses.keys, {}, class: 'form-select' unless @bug.deadline.present? && @bug.deadline < Date.today %>
-                </div>
-                <div class="text-center">
-                  <%= form.submit 'Update Bug Status', class: 'btn btn-primary' unless @bug.deadline.present? && @bug.deadline < Date.today %>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
+      <% if current_user.developer? && current_user == @bug.developer %>
+  <div class="card mt-4">
+    <div class="card-body">
+      <h5 class="card-title">Update Bug Status</h5>
+      <% if @bug.deadline.present? && @bug.deadline < Date.today %>
+        <div class="alert alert-danger mt-4">
+          Deadline is over!
         </div>
+      <% else %>
+        <%= form_with(model: @bug, url: user_project_bug_path(@user, @project, @bug), method: :patch, local: true, html: { class: 'my-4' }) do |form| %>
+          <div class="mb-3">
+            <%= form.label :status, "Bug Status", class: 'form-label' %>
+            <%= form.select :status, Bug.statuses.keys, {}, class: 'form-select' unless @bug.deadline.present? && @bug.deadline < Date.today  %>
+          </div>
+          <div class="text-center">
+            <%= form.submit 'Update Bug Status', class: 'btn btn-primary' unless @bug.deadline.present? && @bug.deadline < Date.today %>
+          </div>
+        <% end %>
       <% end %>
-
+    </div>
+  </div>
+<% end %>
       <div class="mt-4">
         <%= link_to 'Back', user_project_path(@user, @project), class: 'btn btn-secondary' %>
       </div>

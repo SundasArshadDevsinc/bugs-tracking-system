@@ -11,7 +11,7 @@ class BugPolicy < ApplicationPolicy
   end
 
   def update?
-    user.manager? || user.qa?
+    user.manager? || user.qa? || user.developer?
   end
   def destroy?
     user.manager? || user.qa?

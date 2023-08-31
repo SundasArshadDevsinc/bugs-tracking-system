@@ -16,25 +16,15 @@ class ApplicationPolicy
     false
   end
 
-  def create?
-    
-  end
-
   def new?
     create?
   end
 
-  def update?
-    
-  end
 
   def edit?
     update?
   end
 
-  def destroy?
-    
-  end
 
   class Scope
     def initialize(user, scope)
