@@ -3,9 +3,12 @@ Rails.application.routes.draw do
   
   resources :users do
     resources :projects do
-      resources :bugs
+      resources :bugs 
     end
   end
+ 
+  put 'bugs/:id/assign', to: 'bugs#assign_bug', as: :assign
+  
 
   root to: 'projects#index'
 end

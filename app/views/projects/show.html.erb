@@ -17,6 +17,21 @@
         </div>
       </div>
 
+      <div class="card mt-4">
+        <div class="card-body">
+          <h5 class="card-title">Assigned To</h5>
+          <p class="card-text">
+            <% if @project.assignee_ids.present? %>
+              <% assigned_users = User.where(id: @project.assignee_ids) %>
+              <% assigned_users_info = assigned_users.map { |user| "#{user.name} (#{user.role})" } %>
+              <%= assigned_users_info.join(', ') %>
+            <% else %>
+              Not Assigned
+            <% end %>
+          </p>
+        </div>
+      </div>
+
       <h2 class="mt-4">Bugs</h2>
 
       <% if policy(Bug).new? %>
@@ -24,28 +39,25 @@
       <% end %>
 
       <% if @project.bugs.any? %>
-  <table class="table table-bordered">
-    <thead class="thead-dark">
-      <tr>
-        <th>Title</th>
-        <th>Deadline</th>
-        <th>Bug Type</th>
-        <th>Bug Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-    
-    <%= render partial: 'bugs/bugs', collection: @project.bugs, as: :bug %>
-    </tbody>
-  </table>
-<% else %>
-  <p>No bugs associated with this project.</p>
-<% end %>
+        <table class="table table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Assigned To</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render partial: 'bugs/bugs', collection: @project.bugs, as: :bug %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No bugs associated with this project.</p>
+      <% end %>
+
     </div>
-    
   </div>
   <%= link_to 'Back', user_projects_path(@user), class: 'btn btn-secondary' %>
-
 </div>
-

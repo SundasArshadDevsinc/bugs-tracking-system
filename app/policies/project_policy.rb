@@ -14,11 +14,13 @@ class ProjectPolicy < ApplicationPolicy
   def update?
     user.manager?
   end
+  
   def destroy?
     user.manager?
   end
+
   def create?
-    user.manager?
+    user.manager? 
   end
 
 end

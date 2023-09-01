@@ -15,12 +15,12 @@
 
         <div class="mb-3">
           <%= form.label :title, class: 'form-label' %>
-          <%= form.text_field :title, class: 'form-control', placeholder: 'Enter Bug Title' %>
+          <%= form.text_field :title, class: 'form-control', placeholder: 'Enter Title' %>
         </div>
 
         <div class="mb-3">
           <%= form.label :description, class: 'form-label' %>
-          <%= form.text_area :description, class: 'form-control', placeholder: 'Enter Bug Description' %>
+          <%= form.text_area :description, class: 'form-control', placeholder: 'Enter Description' %>
         </div>
 
         <div class="mb-3">
@@ -31,11 +31,6 @@
         <div class="mb-3">
           <%= form.label :types, "Bug Type", class: 'form-label' %>
           <%= form.select :types, Bug.types.keys, selected: Bug.types, class: 'form-select', id: 'bug_bug_type' %>
-        </div>
-
-        <div class="mb-3">
-          <%= form.label :developer_id, "Assign Developer", class: 'form-label' %>
-          <%= form.select :developer_id, options_for_select(User.developer.pluck(:name, :id), @bug.developer_id), {}, class: 'form-select' %>
         </div>
 
         <div class="mb-3">
