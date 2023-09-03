@@ -22,4 +22,8 @@ class BugPolicy < ApplicationPolicy
      user.qa?
   end
   
+  def update_bug_status?
+    user.developer? # Only developers can update bug statuses
+  end
+  
 end

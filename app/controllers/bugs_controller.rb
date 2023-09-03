@@ -5,7 +5,7 @@ class BugsController < ApplicationController
   before_action :find_bug, only: [:show, :edit, :update, :destroy]
 
   def index
-    @bugs = @project.bugs
+    @bugs = @project.bugs.page(params[:page])
   end
 
   def new
@@ -54,10 +54,6 @@ class BugsController < ApplicationController
 
   private
 
-  def bug_params
-    params.require(:bug).permit(:title, :description, :deadline, :types, :status, :developer_id, :image)
-  end
-
   def find_user
     @user = User.find(params[:user_id])
   end
@@ -71,14 +67,19 @@ class BugsController < ApplicationController
   end
 
   def update_bug_status
-    if current_user.developer? # Ensure only developers can update bug_status
+    authorize @bug # This checks the BugPolicy
       if @bug.update(status: params[:bug][:status])
         redirect_to user_project_bug_path(@user, @project, @bug), notice: 'Bug Status was successfully updated.'
       else
         render 'show'
       end
-    else
+    rescue Pundit::NotAuthorizedError
       redirect_to user_project_bug_path(@user, @project, @bug), alert: 'You do not have permission to update Bug Status.'
-    end
   end
+
+  
+  def bug_params
+    params.require(:bug).permit(:title, :description, :deadline, :types, :status, :developer_id, :image)
+  end
+
 end
