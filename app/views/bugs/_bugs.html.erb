@@ -1,0 +1,23 @@
+<tr>
+  <td><%= bug.title %></td>
+  <td><%= bug.types %></td>
+  <td><%= bug.status %></td>
+  <td>
+    <% if bug.developer_id.present? %>
+      <%= developer_name(bug) %>
+    <% else %>
+    <p>Not Assigned</p>
+    <% end %>
+  </td>
+  <td>
+    <div class="btn-group" role="group">
+      <%= link_to 'Show', user_project_bug_path(@user, @project, bug), class: 'btn btn-primary btn-sm' %>
+      <% if policy(Bug).destroy? %>
+        <%= link_to 'Delete', user_project_bug_path(@user, @project, bug), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+      <% end %>
+      <% if bug.developer_id.nil? && current_user.developer? %>
+        <%= link_to 'Assign Bug', assign_path(bug), method: :put, class: 'btn btn-success btn-sm' %> 
+      <% end %>
+    </div>
+  </td>
+</tr>

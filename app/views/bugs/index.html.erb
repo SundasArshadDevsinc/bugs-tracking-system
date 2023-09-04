@@ -1,0 +1,22 @@
+<div class="container">
+  <h1 class="mt-4">Bugs</h1>
+
+  <%= link_to 'New Bug', new_user_project_bug_path(@user, @project), class: 'btn btn-success mt-3' %>
+
+  <table class="table table-bordered mt-4">
+    <thead class="table-dark">
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th colspan="4">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render  @bugs %>
+    </tbody>
+  </table>
+   <%= paginate @bugs %>
+</div>

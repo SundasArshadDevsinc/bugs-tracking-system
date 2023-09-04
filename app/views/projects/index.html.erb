@@ -1,0 +1,23 @@
+<div class="container">
+  <h1 class="mt-4">Projects</h1>
+ 
+  <% if policy(Project).new? %>
+    <%= link_to 'New Project', new_user_project_path(@user), class: 'btn btn-success my-3' %>
+  <% end %>
+
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Technologies</th>
+        <th colspan="3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render  @projects %>
+    </tbody>
+  </table>
+   <%= paginate @projects %>
+  
+</div>
